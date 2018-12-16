@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Field {
 
-    public List<Integer> listHeight = new ArrayList<Integer>(10);
+    public List<Integer> listHeight = new ArrayList<Integer>(Collections.nCopies(10, 0));//10 нулей сначало в массиве
     public int maxHeight=0;
 
     private int[][] field = {//[20][10]
@@ -52,15 +53,25 @@ public class Field {
     }
 
     public void heightReload () {
-        int max=0;
-        for (int j=0;j<10;j++){
-            int i=0;
-            while (field[i][j]==0 && i<20){
-                i++;
+        int max = 0;
+        boolean cellFill;
+        int i1 = 0;
+
+        for (int j = 0; j < 10; j++) {
+            cellFill = false;
+
+            for (int i = 0; i <= 19; i++) {
+                if (field[i][j] != 0) {
+                    cellFill = true;
+                    i1 = i;
+                    break;
+                }
             }
-            if (listHeight.get(j)!=i && i!=20) {
-                listHeight.set(j,i);
-                if (listHeight.get(j)>max) max=listHeight.get(j);
+            if (cellFill) {
+                if (listHeight.get(j) != i1) {
+                    listHeight.set(j, i1);
+                    if (listHeight.get(j) > max) max = listHeight.get(j);
+                }
             }
         }
     }
@@ -85,15 +96,15 @@ public class Field {
     }
 
     public int[][] insert(int[][] figure, int length, int width, int max, int i, int[][] fieldHelper) {
-        int i1 = i;
-        for (int k = 0; k < width; k++) {
-            for (int j = 0; j < length; j++) {
-                fieldHelper[20 - max - width + k + 1][i1] = figure[j][k];
-                i1++;
-            }
-            i1=i;
+        int[][] field11 = new int[20][10];
+        for (int z=0;z<20;z++ ){
+            System.arraycopy(fieldHelper[z], 0, field11[z], 0, 10);
         }
-        return fieldHelper;
+
+        for (int j = 0; j < length; j++) {
+            System.arraycopy(figure[j], 0, field11[20 - max - length + j], i, width);
+        }
+        return field11;
     }
 
 }

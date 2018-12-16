@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class BestSolver {
 
@@ -9,26 +6,25 @@ public class BestSolver {
     private final static double weighHole=26.8;
     private final static double weighHeight=3.5;//наугад пока нудно тестить
     private final static double weighSlot=15.8;
-    private Map<Double,int[][]> mapBestFigure2 = new TreeMap<Double, int[][]>();
+    private Map<int[][],Double> mapBestFigure2 = new HashMap<int[][], Double>();
 
     public int[][] choseBest(List<Integer> shapeQueue){
         Field field = new Field();
         int[][] matr = field.returnField();
-        Map<Double, int[][]> mapBestFigure1 = allPeharbsSituation(shapeQueue, matr, 0);
+        Map<int[][],Double> mapBestFigure1 = allPeharbsSituation(shapeQueue, matr, 0);
 
-        for (int i = mapBestFigure1.size()-1; i> mapBestFigure1.size()-6; i--){
-            mapBestFigure2.putAll(allPeharbsSituation(shapeQueue, (int[][]) mapBestFigure1.values().toArray()[i],1));
+        for (int i = 0; i < 6; i++){
+            mapBestFigure2.putAll(allPeharbsSituation(shapeQueue, (int[][]) mapBestFigure1.keySet().toArray()[i],1));
 
         }
 
-        matr = (int[][]) mapBestFigure2.values().toArray()[mapBestFigure2.size()-1];
-        return matr;
+        return (int[][]) mapBestFigure2.keySet().toArray()[mapBestFigure2.size()-1];
     }
 
-    private Map<Double,int[][]> allPeharbsSituation(List<Integer> shapeQueue, int[][] matr, int numberfigure) {
+    private Map<int[][],Double> allPeharbsSituation(List<Integer> shapeQueue, int[][] matr, int numberfigure) {
         Figure figure = new Figure();
         Field field = new Field();
-        Map<Double,int[][]> mapBestFigure = new TreeMap<Double, int[][]>();
+        Map<int[][],Double> mapBestFigure = new HashMap<int[][], Double>();
 
         for (int k=1;k<=4;k++) {
             int[][] figure1 = figure.figureRandom(shapeQueue.get(numberfigure), k);
@@ -36,25 +32,25 @@ public class BestSolver {
             int figure1Length = figure1.length;
             int figure1Width = figure1[0].length;
 
-            List<Integer> onFloor = figure.figureLength(shapeQueue.get(numberfigure), 0);
+            List<Integer> onFloor = figure.figureLength(shapeQueue.get(numberfigure), k);
             // row=figure1.length;/10
             //col=figure1[0].length;/20
 
 
             //роняем фигуру в одном положении
-            for (int i = 0; i < 10 - figure1Length; i++) {
-                List<Integer> list = field.listHeight.subList(i, i + figure1Length - 1);
+            for (int i = 0; i < 10 - figure1Width; i++) {
+
+                List<Integer> list = field.listHeight.subList(i, i+figure1Width);
 
                 int max = 0;
 
                 //место куда встанет фигура(является самым большим difference(difference-верхняя строка фигуры)
-                for (int j = 0; j < figure1Length; j++) {
+                for (int j = 0; j < figure1Width; j++) {
                     int difference = list.get(j) - onFloor.get(j);
                     if (difference > max) {
                         max = difference;
                     }
                 }
-
                 int[][] matrWithFigure = field.insert(figure1, figure1Length, figure1Width, max, i, matr);//вставили фигуру
 
                 int numberFillRow = numberFillRow(matrWithFigure);
@@ -63,7 +59,7 @@ public class BestSolver {
                 int numberSlot = numberSlot(matrWithFigure);
                 double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) + (maxHeight * weighHeight) + (numberSlot * weighSlot);
 
-                mapBestFigure.put(function,matrWithFigure);
+                mapBestFigure.put(matrWithFigure,function);
             }
         }
         return mapBestFigure;
@@ -75,7 +71,7 @@ public class BestSolver {
         for (int i=0; i<20; i++) {
             count=0;
             for (int j=0;j<10;j++) {
-                while (field[i][j] == 1) {
+                if (field[i][j] == 1) {
                     count++;
                 }
             }
@@ -96,12 +92,13 @@ public class BestSolver {
         return numberHole;
     }
 
-    private int maxHeight(int[][] field) {//максимальная высота от пола после установки фигуры
+    private int  maxHeight(int[][] field) {//максимальная высота от пола после установки фигуры
         int max=0;
+        boolean check = true;
         for (int i=0; i<20; i++) {
             for (int j=0;j<10;j++) {
-                if (field[i][j] != 0) {
-                    max=20-i;break;
+                if (field[i][j] != 0 && check) {
+                    max=20-i;check=false;
                 }
             }
         }
@@ -122,15 +119,24 @@ public class BestSolver {
     }
 
     private List<Integer> heightList(int[][] field) {
-        List<Integer> listHeight1 = new ArrayList<Integer>(10);
+        List<Integer> listHeight1 = new ArrayList<Integer>(Collections.nCopies(10, 0));
+        boolean cellFill;
+        int i1 = 0;
 
         for (int j=0;j<10;j++){
-            int i=0;
-            while (field[i][j]==0 && i<20){
-                i++;
+            cellFill=false;
+
+            for (int i=0;i<=19;i++){
+                if (field[i][j]!=0) {
+                    cellFill=true;
+                    i1=i;
+                    break;
+                }
             }
-            if (listHeight1.get(j)!=i && i!=20) {
-                listHeight1.set(j,i);
+            if (cellFill) {
+                if (listHeight1.get(j) != i1) {
+                    listHeight1.set(j, i1);
+                }
             }
         }
         return listHeight1;

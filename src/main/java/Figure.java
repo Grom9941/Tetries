@@ -35,14 +35,11 @@ public class Figure {
         switch (position) {
             case 1:
             case 3:
-                size.set(0, 0);
-                size.set(1, 0);
-                size.set(2, 0);
-                size.set(3, 0);
+                size.add(0);size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
             case 4:
-                size.set(0, 0);
+                size.add(0);
                 break;
         }
         return size;
@@ -52,22 +49,16 @@ public class Figure {
         ArrayList<Integer> size = new ArrayList<Integer>();
         switch (position) {
             case 1:
-                size.set(0, 0);
-                size.set(1, 0);
-                size.set(2, 0);
+                size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
-                size.set(0, 0);
-                size.set(1, 2);
+                size.add(0);size.add(2);
                 break;
             case 3:
-                size.set(0, 1);
-                size.set(1, 1);
-                size.set(2, 0);
+                size.add(1);size.add(1);size.add(0);
                 break;
             case 4:
-                size.set(0, 0);
-                size.set(1, 0);
+                size.add(0);size.add(0);
                 break;
         }
         return size;
@@ -77,22 +68,16 @@ public class Figure {
         ArrayList<Integer> size = new ArrayList<Integer>();
         switch (position) {
             case 1:
-                size.set(0, 0);
-                size.set(1, 0);
-                size.set(2, 0);
+                size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
-                size.set(0, 0);
-                size.set(1, 0);
+                size.add(0);size.add(0);
                 break;
             case 3:
-                size.set(0, 0);
-                size.set(1, 1);
-                size.set(2, 1);
+                size.add(0);size.add(1);size.add(1);
                 break;
             case 4:
-                size.set(0, 2);
-                size.set(0, 0);
+                size.add(2);size.add(0);
                 break;
         }
         return size;
@@ -105,8 +90,7 @@ public class Figure {
             case 2:
             case 3:
             case 4:
-                size.set(0, 0);
-                size.set(0, 0);
+                size.add(0);size.add(0);
                 break;
         }
         return size;
@@ -117,14 +101,11 @@ public class Figure {
         switch (position) {
             case 1:
             case 3:
-                size.set(0, 0);
-                size.set(1, 0);
-                size.set(2, 1);
+                size.add(0);size.add(0);size.add(1);
                 break;
             case 2:
             case 4:
-                size.set(0, 1);
-                size.set(0, 0);
+                size.add(1);size.add(0);
                 break;
         }
         return size;
@@ -134,22 +115,16 @@ public class Figure {
         ArrayList<Integer> size = new ArrayList<Integer>();
         switch (position) {
             case 1:
-                size.set(0, 0);
-                size.set(1, 0);
-                size.set(2, 0);
+                size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
-                size.set(0, 0);
-                size.set(1, 1);
+                size.add(0);size.add(1);
                 break;
             case 3:
-                size.set(0, 1);
-                size.set(1, 0);
-                size.set(2, 1);
+                size.add(1);size.add(0);size.add(1);
                 break;
             case 4:
-                size.set(0, 1);
-                size.set(0, 0);
+                size.add(1);size.add(0);
                 break;
         }
         return size;
@@ -160,14 +135,11 @@ public class Figure {
         switch (position) {
             case 1:
             case 3:
-                size.set(0, 1);
-                size.set(1, 0);
-                size.set(2, 0);
+                size.add(1);size.add(0);size.add(0);
                 break;
             case 2:
             case 4:
-                size.set(0, 0);
-                size.set(0, 1);
+                size.add(0);size.add(1);
                 break;
         }
         return size;
