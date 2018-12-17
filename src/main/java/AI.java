@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,24 +23,26 @@ public class AI {
 
             shapeQueue.add(rand1);
             shapeQueue.add(rand2);
+//            shapeQueue.add(4);
+//            shapeQueue.add(1);
 
-
-            matrix=bestSolver.choseBest(shapeQueue);
+            Pair pairBest = bestSolver.choseBest(shapeQueue);
+            matrix = (int[][]) pairBest.getKey();
+            if (((Double) pairBest.getValue())==Double.MAX_VALUE) break;
+            //matrix=bestSolver.choseBest(shapeQueue);
 
             fiel.insertField(matrix);
-            score+=fiel.fillFind(matrix);
-            fiel.heightReload();
-            overflow = fiel.maxHeight;
-
-//            System.out.println(Arrays.deepToString(matrix));
-//            System.out.println(score);
             matrixToString(matrix,score);
+                fiel.heightReload();
+            score+=fiel.fillFind(matrix);
+            overflow = Field.maxHeight;
 
             TimeUnit.SECONDS.sleep(1);
 
-                shapeQueue.remove(1);
+            shapeQueue.remove(1);
             shapeQueue.remove(0);
         }
+        System.out.println("Конец");
     }
 
     private static void matrixToString(int[][] field, int score){

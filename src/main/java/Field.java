@@ -1,13 +1,15 @@
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Field {
 
-    public List<Integer> listHeight = new ArrayList<Integer>(Collections.nCopies(10, 0));//10 нулей сначало в массиве
-    public int maxHeight=0;
+    private static List<Integer> listHeight = new ArrayList<Integer>(Collections.nCopies(10, 0));//10 нулей сначало в массиве
+    public static int maxHeight=0;
 
-    private int[][] field = {//[20][10]
+    public static int[][] field = {//[20][10]
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -36,20 +38,16 @@ public class Field {
 
     private void fillDelete(int i) {
 
-        for (int i1=0 ;i1<maxHeight;i1++){
+        for (int i1=i ;i1>=20-maxHeight;i1--){//возможно >=
             for (int j=0;j<10;j++) {
-                if (i-maxHeight-1 >= 0) {
-                    field[i-maxHeight][j] = field[i-maxHeight-1][j];
+                if (i1-1 >= 0) {
+                    field[i1][j] = field[i1-1][j];
                 } else {
                     field[0][j] = 0;
                 }
             }
         }
         heightReload();
-    }
-
-    public int[][] returnField(){
-        return field;
     }
 
     public void heightReload () {
@@ -68,12 +66,13 @@ public class Field {
                 }
             }
             if (cellFill) {
-                if (listHeight.get(j) != i1) {
-                    listHeight.set(j, i1);
+                if (listHeight.get(j) != (20-i1)) {
+                    listHeight.set(j, (20-i1));
                     if (listHeight.get(j) > max) max = listHeight.get(j);
                 }
             }
         }
+        maxHeight=max;
     }
 
     public int fillFind(int[][] fieldHelper) {
@@ -95,16 +94,22 @@ public class Field {
         return score;
     }
 
-    public int[][] insert(int[][] figure, int length, int width, int max, int i, int[][] fieldHelper) {
+    public Pair<int[][], Boolean> insert(int[][] figure, int length, int width, int max, int i, int[][] fieldHelper) {
         int[][] field11 = new int[20][10];
+        Boolean overflow=false;
         for (int z=0;z<20;z++ ){
             System.arraycopy(fieldHelper[z], 0, field11[z], 0, 10);
         }
 
         for (int j = 0; j < length; j++) {
-            System.arraycopy(figure[j], 0, field11[20 - max - length + j], i, width);
+            for (int k = 0; k < width; k++) {
+                if ((20-max-length+j)>0) {
+                    field11[20 - max - length + j][i + k] = figure[j][k];
+                } else overflow=true;
+            }
         }
-        return field11;
+      //  return field11;
+        return new Pair<int[][], Boolean>(field11,overflow);
     }
 
 }

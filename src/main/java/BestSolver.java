@@ -1,24 +1,35 @@
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class BestSolver {
-
+//пространство между фигурами
     private final static double weighFillRow=1.0;
     private final static double weighHole=26.8;
-    private final static double weighHeight=3.5;//наугад пока нудно тестить
-    private final static double weighSlot=15.8;
+    private final static double weighHeight=15.0;//наугад пока нудно тестить
+    private final static double weighSlot=35.8;
     private Map<int[][],Double> mapBestFigure2 = new HashMap<int[][], Double>();
 
-    public int[][] choseBest(List<Integer> shapeQueue){
-        Field field = new Field();
-        int[][] matr = field.returnField();
+    public Pair<int[][], Double> choseBest(List<Integer> shapeQueue){
+        int[][] matr = Field.field;
         Map<int[][],Double> mapBestFigure1 = allPeharbsSituation(shapeQueue, matr, 0);
 
-        for (int i = 0; i < 6; i++){
-            mapBestFigure2.putAll(allPeharbsSituation(shapeQueue, (int[][]) mapBestFigure1.keySet().toArray()[i],1));
 
+        for (int i = 0; i < mapBestFigure1.size(); i++){
+            mapBestFigure2.putAll(allPeharbsSituation(shapeQueue, (int[][]) mapBestFigure1.keySet().toArray()[i],1));
         }
 
-        return (int[][]) mapBestFigure2.keySet().toArray()[mapBestFigure2.size()-1];
+        Double min=Double.MAX_VALUE;
+        int[][] result = new int[0][];
+
+        for (int j=0; j<mapBestFigure2.size(); j++){
+            if (min>((Double)mapBestFigure2.values().toArray()[j])){
+                min=(Double) mapBestFigure2.values().toArray()[j];
+                result=(int[][])mapBestFigure2.keySet().toArray()[j];
+            }
+        }
+        return new Pair<int[][], Double>(result,min);
+       // return result;
     }
 
     private Map<int[][],Double> allPeharbsSituation(List<Integer> shapeQueue, int[][] matr, int numberfigure) {
@@ -38,9 +49,13 @@ public class BestSolver {
 
 
             //роняем фигуру в одном положении
-            for (int i = 0; i < 10 - figure1Width; i++) {
+            for (int i = 0; i <= 10 - figure1Width; i++) {
 
-                List<Integer> list = field.listHeight.subList(i, i+figure1Width);
+                    List<Integer> list = heightList(matr).subList(i,i+figure1Width);
+                    for(int o=0;o<list.size();o++){
+                        if (list.get(o)!=0) list.set(o,20-list.get(o));
+                    }
+            //    List<Integer> list = field.listHeight.subList(i, i+figure1Width);
 
                 int max = 0;
 
@@ -51,15 +66,19 @@ public class BestSolver {
                         max = difference;
                     }
                 }
-                int[][] matrWithFigure = field.insert(figure1, figure1Length, figure1Width, max, i, matr);//вставили фигуру
+                Pair fieldWithFigrue = field.insert(figure1, figure1Length, figure1Width, max, i, matr);
+                Boolean overflow = (Boolean) fieldWithFigrue.getValue();
+                int[][] matrWithFigure = (int[][]) fieldWithFigrue.getKey();
+                if (!overflow) {
+//                int[][] matrWithFigure = field.insert(figure1, figure1Length, figure1Width, max, i, matr);
+                    int numberFillRow = numberFillRow(matrWithFigure);
+                    int numberHole = numberHole(matrWithFigure);
+                    int maxHeight = maxHeight(matrWithFigure);
+                    int numberSlot = numberSlot(matrWithFigure);
+                    double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) + (maxHeight * weighHeight) + (numberSlot * weighSlot);
 
-                int numberFillRow = numberFillRow(matrWithFigure);
-                int numberHole = numberHole(matrWithFigure);
-                int maxHeight = maxHeight(matrWithFigure);
-                int numberSlot = numberSlot(matrWithFigure);
-                double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) + (maxHeight * weighHeight) + (numberSlot * weighSlot);
-
-                mapBestFigure.put(matrWithFigure,function);
+                    mapBestFigure.put(matrWithFigure, function);
+                } else mapBestFigure.put(Field.field, Double.MAX_VALUE);
             }
         }
         return mapBestFigure;
