@@ -24,7 +24,8 @@ public class AI {
             shapeQueue.add(rand1);
             shapeQueue.add(rand2);
 //            shapeQueue.add(4);
-//            shapeQueue.add(1);
+//            shapeQueue.add(4);
+
 
             Pair pairBest = bestSolver.choseBest(shapeQueue);
             matrix = (int[][]) pairBest.getKey();
@@ -33,11 +34,11 @@ public class AI {
 
             fiel.insertField(matrix);
             matrixToString(matrix,score);
-                fiel.heightReload();
+            fiel.heightReload();
             score+=fiel.fillFind(matrix);
             overflow = Field.maxHeight;
 
-            TimeUnit.SECONDS.sleep(1);
+//            TimeUnit.SECONDS.sleep(1);
 
             shapeQueue.remove(1);
             shapeQueue.remove(0);

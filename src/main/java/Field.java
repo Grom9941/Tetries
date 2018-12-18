@@ -104,7 +104,9 @@ public class Field {
         for (int j = 0; j < length; j++) {
             for (int k = 0; k < width; k++) {
                 if ((20-max-length+j)>0) {
-                    field11[20 - max - length + j][i + k] = figure[j][k];
+                    if(figure[j][k]==1) {
+                        field11[20 - max - length + j][i + k] = figure[j][k];
+                    }
                 } else overflow=true;
             }
         }

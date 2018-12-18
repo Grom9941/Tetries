@@ -4,10 +4,11 @@ import java.util.*;
 
 public class BestSolver {
 //пространство между фигурами
-    private final static double weighFillRow=1.0;
-    private final static double weighHole=26.8;
-    private final static double weighHeight=15.0;//наугад пока нудно тестить
-    private final static double weighSlot=35.8;
+    private final static double weighFillRow=-5.8;
+    private final static double weighHole=4.2;
+    private final static double weighHeight=1.2;
+    private final static double weighSlot=1.8;
+    private final static double weighNumberNotFill=4.8;
     private Map<int[][],Double> mapBestFigure2 = new HashMap<int[][], Double>();
 
     public Pair<int[][], Double> choseBest(List<Integer> shapeQueue){
@@ -28,6 +29,7 @@ public class BestSolver {
                 result=(int[][])mapBestFigure2.keySet().toArray()[j];
             }
         }
+
         return new Pair<int[][], Double>(result,min);
        // return result;
     }
@@ -75,7 +77,9 @@ public class BestSolver {
                     int numberHole = numberHole(matrWithFigure);
                     int maxHeight = maxHeight(matrWithFigure);
                     int numberSlot = numberSlot(matrWithFigure);
-                    double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) + (maxHeight * weighHeight) + (numberSlot * weighSlot);
+                    int numberNotFill = numberNotFill(matrWithFigure);
+
+                    double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) + (maxHeight * weighHeight) + (numberSlot * weighSlot) + (numberNotFill * weighNumberNotFill);
 
                     mapBestFigure.put(matrWithFigure, function);
                 } else mapBestFigure.put(Field.field, Double.MAX_VALUE);
@@ -99,7 +103,7 @@ public class BestSolver {
         return numberFill;
     }
 
-    private int numberHole(int[][] field) {//количество клеток заполненных с верху не возможно подлесть
+    private int numberHole(int[][] field) {//количество клеток заполненных с верху
         int numberHole=0;
         for (int i=1; i<20; i++) {
             for (int j=0;j<10;j++) {
@@ -135,6 +139,31 @@ public class BestSolver {
            if(listHeight1.get(i-1)>listHeight1.get(i) && listHeight1.get(i)<listHeight1.get(i+1)) numberFill++;
         }
         return numberFill;
+    }
+
+    private int numberNotFill(int[][] field) {//если ряд не заполнен больше чем 3 клетками
+        List<Integer> listHeight1 = heightList(field);
+        int numberNotFill=0;
+        int cout;
+        for (int j=0;j<10;j++) {
+            cout=0;
+            for (int i=19; i>=0; i--) {
+                if (field[i][j] == 0) {
+                    cout++;
+                } else {
+                    if (cout>=3) numberNotFill++;
+                    cout=0;
+                }
+            }
+        }
+
+//        if(listHeight1.get(0)<=(listHeight1.get(1)-3)) numberNotFill++;
+//        if((listHeight1.get(8)-3)>=listHeight1.get(9)) numberNotFill++;
+//
+//        for (int i=1; i<listHeight1.size()-1; i++) {
+//            if((listHeight1.get(i-1)-3)>=listHeight1.get(i) && listHeight1.get(i)<(listHeight1.get(i+1)-3)) numberNotFill++;
+//        }
+        return numberNotFill;
     }
 
     private List<Integer> heightList(int[][] field) {
