@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Figure {
 
-    public ArrayList<Integer> figureLength(int numberFigure, int position) {//массив высоты для определенной фигуры (если ее поместить в низ)
+    public ArrayList<Integer> figureLength(int numberFigure,int position) {
         ArrayList<Integer> list = new ArrayList<Integer>();
         switch (numberFigure) {
             case 1:
@@ -37,10 +37,7 @@ public class Figure {
         switch (position) {
             case 1:
             case 3:
-                size.add(0);
-                size.add(0);
-                size.add(0);
-                size.add(0);
+                size.add(0);size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
             case 4:
@@ -54,22 +51,16 @@ public class Figure {
         ArrayList<Integer> size = new ArrayList<Integer>();
         switch (position) {
             case 1:
-                size.add(0);
-                size.add(0);
-                size.add(0);
+                size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
-                size.add(0);
-                size.add(2);
+                size.add(0);size.add(2);
                 break;
             case 3:
-                size.add(1);
-                size.add(1);
-                size.add(0);
+                size.add(1);size.add(1);size.add(0);
                 break;
             case 4:
-                size.add(0);
-                size.add(0);
+                size.add(0);size.add(0);
                 break;
         }
         return size;
@@ -79,22 +70,16 @@ public class Figure {
         ArrayList<Integer> size = new ArrayList<Integer>();
         switch (position) {
             case 1:
-                size.add(0);
-                size.add(0);
-                size.add(0);
+                size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
-                size.add(0);
-                size.add(0);
+                size.add(0);size.add(0);
                 break;
             case 3:
-                size.add(0);
-                size.add(1);
-                size.add(1);
+                size.add(0);size.add(1);size.add(1);
                 break;
             case 4:
-                size.add(2);
-                size.add(0);
+                size.add(2);size.add(0);
                 break;
         }
         return size;
@@ -107,8 +92,7 @@ public class Figure {
             case 2:
             case 3:
             case 4:
-                size.add(0);
-                size.add(0);
+                size.add(0);size.add(0);
                 break;
         }
         return size;
@@ -119,14 +103,11 @@ public class Figure {
         switch (position) {
             case 1:
             case 3:
-                size.add(0);
-                size.add(0);
-                size.add(1);
+                size.add(0);size.add(0);size.add(1);
                 break;
             case 2:
             case 4:
-                size.add(1);
-                size.add(0);
+                size.add(1);size.add(0);
                 break;
         }
         return size;
@@ -136,22 +117,16 @@ public class Figure {
         ArrayList<Integer> size = new ArrayList<Integer>();
         switch (position) {
             case 1:
-                size.add(0);
-                size.add(0);
-                size.add(0);
+                size.add(0);size.add(0);size.add(0);
                 break;
             case 2:
-                size.add(0);
-                size.add(1);
+                size.add(0);size.add(1);
                 break;
             case 3:
-                size.add(1);
-                size.add(0);
-                size.add(1);
+                size.add(1);size.add(0);size.add(1);
                 break;
             case 4:
-                size.add(1);
-                size.add(0);
+                size.add(1);size.add(0);
                 break;
         }
         return size;
@@ -162,20 +137,17 @@ public class Figure {
         switch (position) {
             case 1:
             case 3:
-                size.add(1);
-                size.add(0);
-                size.add(0);
+                size.add(1);size.add(0);size.add(0);
                 break;
             case 2:
             case 4:
-                size.add(0);
-                size.add(1);
+                size.add(0);size.add(1);
                 break;
         }
         return size;
     }
 
-    public int[][] figureRandom(int numberFigure, int position) {//выводит матрицу в виде необходимой фигуры
+    public int[][] figureRandom(int numberFigure,int position) {
         int[][] matrix = new int[4][4];
         switch (numberFigure) {
             case 1:

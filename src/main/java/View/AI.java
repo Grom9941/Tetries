@@ -9,40 +9,34 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class AI extends Field {
+public class AI {
 
     public static void main(String[] args) throws InterruptedException {
-
-        int score = 0;
-        int overflow = 0;
-
-        while (overflow < 20) {
-
-            Random random = new Random();
+        int score=0;
+        int overflow=0;
+        while (overflow<20) {
+            Random rand = new Random();
+            Field fiel = new Field();
             BestSolver bestSolver = new BestSolver();
             List<Integer> shapeQueue = new LinkedList<Integer>();
             int[][] matrix;
 
-            //формируем массив из двух рандомных фигур
-            int rand1 = random.nextInt(7) + 1;
-            int rand2 = random.nextInt(7) + 1;
+            int rand1 = rand.nextInt(7) + 1;
+            int rand2 = rand.nextInt(7) + 1;
 
             shapeQueue.add(rand1);
             shapeQueue.add(rand2);
 
-            //лучшее решение из двух фигур
+
             Pair pairBest = bestSolver.choseBest(shapeQueue);
             matrix = (int[][]) pairBest.getKey();
+            if (((Double) pairBest.getValue())==Double.MAX_VALUE) break;
 
-            //переполнение
-            if (((Double) pairBest.getValue()) == Double.MAX_VALUE) break;
-
-            //обновляет состояние поля
-            insertField(matrix);
-            matrixToString(matrix, score);
-            heightReload();
-            score += fillFind(matrix);
-            overflow = maxHeight;
+            fiel.insertField(matrix);
+            matrixToString(matrix,score);
+            fiel.heightReload();
+            score+=fiel.fillFind(matrix);
+            overflow = Field.maxHeight;
 
             TimeUnit.SECONDS.sleep(1);
 
@@ -52,9 +46,9 @@ public class AI extends Field {
         System.out.println("Конец");
     }
 
-    private static void matrixToString(int[][] field, int score) {
+    private static void matrixToString(int[][] field, int score){
 
-        for (int[] aField : field) {
+        for (int[] aField : field) {//20
             System.out.println(Arrays.toString(aField));
         }
         System.out.println(score);
