@@ -9,7 +9,7 @@ import java.util.List;
 public class Field {
 
     private static List<Integer> listHeight = new ArrayList<Integer>(Collections.nCopies(10, 0));//массив высоты столбцов
-    public static int maxHeight = 0;//максимальная высота
+    protected static int maxHeight = 0;//максимальная высота
 
     public static int[][] field = {//[20][10]
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -34,7 +34,7 @@ public class Field {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    public static void insertField(int[][] fieldRecorder) {
+    protected static void insertField(int[][] fieldRecorder) {
         field = fieldRecorder;
     }
 
@@ -52,7 +52,7 @@ public class Field {
         heightReload();
     }
 
-    public static void heightReload() {//переопределение массива высоты столбцов
+    protected static void heightReload() {//переопределение массива высоты столбцов
         int max = 0;
         boolean cellFill;
         int i1 = 0;
@@ -77,7 +77,7 @@ public class Field {
         maxHeight = max;
     }
 
-    public static int fillFind(int[][] fieldHelper) {//находит заполненные ряды
+    protected static int fillFind(int[][] fieldHelper) {//находит заполненные ряды
         int count;
         int score = 0;
 
