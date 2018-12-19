@@ -1,3 +1,6 @@
+package View;
+
+import Model.Field;
 import javafx.util.Pair;
 
 import java.util.Arrays;
@@ -23,14 +26,11 @@ public class AI {
 
             shapeQueue.add(rand1);
             shapeQueue.add(rand2);
-//            shapeQueue.add(4);
-//            shapeQueue.add(4);
 
 
             Pair pairBest = bestSolver.choseBest(shapeQueue);
             matrix = (int[][]) pairBest.getKey();
             if (((Double) pairBest.getValue())==Double.MAX_VALUE) break;
-            //matrix=bestSolver.choseBest(shapeQueue);
 
             fiel.insertField(matrix);
             matrixToString(matrix,score);
@@ -38,7 +38,7 @@ public class AI {
             score+=fiel.fillFind(matrix);
             overflow = Field.maxHeight;
 
-//            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(1);
 
             shapeQueue.remove(1);
             shapeQueue.remove(0);
