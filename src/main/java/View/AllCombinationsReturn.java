@@ -10,34 +10,34 @@ import java.util.Map;
 
 public class AllCombinationsReturn extends MethodForFuncton {
 
-    private final static double weighFillRow=-5.8;
-    private final static double weighHole=4.2;
-    private final static double weighHeight=1.2;
-    private final static double weighSlot=1.8;
-    private final static double weighNumberNotFill=4.8;
+    private final static double weighFillRow = -5.8;
+    private final static double weighHole = 4.2;
+    private final static double weighHeight = 1.2;
+    private final static double weighSlot = 1.8;
+    private final static double weighNumberNotFill = 4.8;
 
-    protected Map<int[][],Double> allPeharbsSituation(List<Integer> shapeQueue, int[][] matr, int numberfigure) {
+    protected Map<int[][], Double> allPeharbsSituation(List<Integer> shapeQueue, int[][] matr, int numberfigure) {
         Figure figure = new Figure();
         Field field = new Field();
-        Map<int[][],Double> mapBestFigure = new HashMap<int[][], Double>();
+        Map<int[][], Double> mapBestFigure = new HashMap<int[][], Double>();
 
-        for (int k=1;k<=4;k++) {
+        //4 различных поворота фигуры
+        for (int k = 1; k <= 4; k++) {
             int[][] figure1 = figure.figureRandom(shapeQueue.get(numberfigure), k);
-
+            int max = 0;
             int figure1Length = figure1.length;
             int figure1Width = figure1[0].length;
 
             List<Integer> onFloor = figure.figureLength(shapeQueue.get(numberfigure), k);
 
-            //роняем фигуру в одном положении
+            //ставим фигуру в одном положении по всей длине поля
             for (int i = 0; i <= 10 - figure1Width; i++) {
 
-                List<Integer> list = MethodForFuncton.heightList(matr).subList(i,i+figure1Width);
-                for(int o=0;o<list.size();o++){
-                    if (list.get(o)!=0) list.set(o,20-list.get(o));
+                List<Integer> list = MethodForFuncton.heightList(matr).subList(i, i + figure1Width);
+                for (int l = 0; l < list.size(); l++) {
+                    if (list.get(l) != 0) list.set(l, 20 - list.get(l));
                 }
 
-                int max = 0;
                 //место куда встанет фигура(является самым большим difference(difference-верхняя строка фигуры)
                 for (int j = 0; j < figure1Width; j++) {
                     int difference = list.get(j) - onFloor.get(j);
@@ -45,19 +45,26 @@ public class AllCombinationsReturn extends MethodForFuncton {
                         max = difference;
                     }
                 }
+
                 Pair fieldWithFigrue = field.insert(figure1, figure1Length, figure1Width, max, i, matr);
                 Boolean overflow = (Boolean) fieldWithFigrue.getValue();
                 int[][] matrWithFigure = (int[][]) fieldWithFigrue.getKey();
+
+                //при переполнении поля значение функции будет добавленно как Double.Max_Value оно не будет использоваться так как вычисляется минимальное из всех функций
+                //в дальнейшем будет использоваться для вычисления полного переполнения поля
                 if (!overflow) {
+
                     int numberFillRow = MethodForFuncton.numberFillRow(matrWithFigure);
                     int numberHole = MethodForFuncton.numberHole(matrWithFigure);
                     int maxHeight = MethodForFuncton.maxHeight(matrWithFigure);
                     int numberSlot = MethodForFuncton.numberSlot(matrWithFigure);
                     int numberNotFill = MethodForFuncton.numberNotFill(matrWithFigure);
 
-                    double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) + (maxHeight * weighHeight) + (numberSlot * weighSlot) + (numberNotFill * weighNumberNotFill);
+                    double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) +
+                            (maxHeight * weighHeight) + (numberSlot * weighSlot) + (numberNotFill * weighNumberNotFill);
 
                     mapBestFigure.put(matrWithFigure, function);
+
                 } else mapBestFigure.put(Field.field, Double.MAX_VALUE);
             }
         }
