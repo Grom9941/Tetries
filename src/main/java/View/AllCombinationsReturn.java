@@ -14,7 +14,8 @@ public class AllCombinationsReturn extends MethodForFuncton {
     private final static double weighHole = 4.2;
     private final static double weighHeight = 1.2;
     private final static double weighSlot = 1.8;
-    private final static double weighNumberNotFill = 4.8;
+    private final static double weighNumberNotFill1 = 4.8;
+    private final static double weighNumberNotFill2 = 2.8;
 
     protected Map<int[][], Double> allPeharbsSituation(List<Integer> shapeQueue, int[][] matr, int numberfigure) {
         Figure figure = new Figure();
@@ -54,14 +55,16 @@ public class AllCombinationsReturn extends MethodForFuncton {
                 //в дальнейшем будет использоваться для вычисления полного переполнения поля
                 if (!overflow) {
 
-                    int numberFillRow = MethodForFuncton.numberFillRow(matrWithFigure);
-                    int numberHole = MethodForFuncton.numberHole(matrWithFigure);
-                    int maxHeight = MethodForFuncton.maxHeight(matrWithFigure);
-                    int numberSlot = MethodForFuncton.numberSlot(matrWithFigure);
-                    int numberNotFill = MethodForFuncton.numberNotFill(matrWithFigure);
+                    int numberFillRow = numberFillRow(matrWithFigure);
+                    int numberHole = numberHole(matrWithFigure);
+                    int maxHeight = maxHeight(matrWithFigure);
+                    int numberSlot = numberSlot(matrWithFigure);
 
-                    double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) +
-                            (maxHeight * weighHeight) + (numberSlot * weighSlot) + (numberNotFill * weighNumberNotFill);
+                    Pair<Integer,Integer> numberNotFill = numberNotFill(matrWithFigure);
+                    int numberNotFill1 = numberNotFill.getKey();
+                    int numberNotFill2 = numberNotFill.getValue();
+                    double function = (numberFillRow * weighFillRow) + (numberHole * weighHole) + (maxHeight * weighHeight) +
+                            (numberSlot * weighSlot) + (numberNotFill1 * weighNumberNotFill1) + ((numberNotFill2 * weighNumberNotFill2));
 
                     mapBestFigure.put(matrWithFigure, function);
 

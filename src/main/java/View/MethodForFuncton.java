@@ -1,5 +1,7 @@
 package View;
 
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,8 +65,9 @@ public class MethodForFuncton {
         return numberFill;
     }
 
-    protected static int numberNotFill(int[][] field) {//если ряд не заполнен больше чем 3 клетками
-        int numberNotFill = 0;
+    protected static Pair<Integer,Integer> numberNotFill(int[][] field) {//если ряд не заполнен больше чем 3 клетками или ровно на 2 клетки
+        int numberNotFill1 = 0;
+        int numberNotFill2 = 0;
         int cout;
 
         for (int j = 0; j < 10; j++) {
@@ -73,12 +76,13 @@ public class MethodForFuncton {
                 if (field[i][j] == 0) {
                     cout++;
                 } else {
-                    if (cout >= 3) numberNotFill++;
+                    if (cout >= 3) numberNotFill1++;
+                    if (cout ==2) numberNotFill2++;
                     cout = 0;
                 }
             }
         }
-        return numberNotFill;
+        return new Pair(numberNotFill1,numberNotFill2);
     }
 
     protected static List<Integer> heightList(int[][] field) { //лист на сколько заполнен каждый столбец
